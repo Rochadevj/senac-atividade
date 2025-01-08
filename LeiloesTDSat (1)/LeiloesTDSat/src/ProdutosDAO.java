@@ -14,7 +14,7 @@ public class ProdutosDAO {
     // Método para cadastrar um produto no banco de dados
     public void cadastrarProduto(ProdutosDTO produto) {
         
-        // Conectar ao banco de dados (comentei aqui porque você já tem um método para isso)
+   
         //conn = new ConectaDAO().connectDB();
         
         // Comando SQL para inserir os dados
@@ -43,7 +43,7 @@ public class ProdutosDAO {
             // Exibe uma mensagem caso ocorra algum erro no processo de cadastro
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
         } finally {
-            // Fechar a conexão, se necessário
+   
             try {
                 if (conn != null) conn.close();
                 if (prep != null) prep.close();
