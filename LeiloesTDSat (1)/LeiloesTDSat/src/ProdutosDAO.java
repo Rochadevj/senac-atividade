@@ -53,8 +53,44 @@ public class ProdutosDAO {
         }
     }
     
-    // Método para listar todos os produtos cadastrados
-    public ArrayList<ProdutosDTO> listarProdutos() {
-        return listagem;
+   public ArrayList<ProdutosDTO> listarProdutos() {
+    // Limpar a lista antes de preencher para evitar duplicação
+    listagem.clear();
+    
+    // Comando SQL para buscar todos os produtos
+    String sql = "SELECT * FROM produtos";
+    
+    try {
+        // Preparar a consulta
+        prep = conn.prepareStatement(sql);
+        
+        // Executar a consulta
+        resultset = prep.executeQuery();
+        
+        // Preencher a lista com os produtos retornados do banco de dados
+        while (resultset.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setDescricao(resultset.getString("descricao"));
+            produto.setPreco(resultset.getDouble("preco"));
+            // Adicionar o produto à lista
+            listagem.add(produto);
+        }
+    } catch (Exception e) {
+        // Exibe mensagem de erro em caso de falha na consulta
+        JOptionPane.showMessageDialog(null, "Erro ao listar os produtos: " + e.getMessage());
+    } finally {
+        try {
+            if (conn != null) conn.close();
+            if (prep != null) prep.close();
+            if (resultset != null) resultset.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    
+    return listagem;
+}
+
 }
