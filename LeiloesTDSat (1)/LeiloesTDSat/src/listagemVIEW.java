@@ -136,12 +136,44 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-        
+        try {
+        int id = Integer.parseInt(id_produto_venda.getText().trim());
+
         ProdutosDAO produtosdao = new ProdutosDAO();
+        boolean sucesso = ProdutosDAO.venderProduto(id);
+
+        if (sucesso) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Produto vendido com sucesso!");
+            listarProdutos();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: Produto não encontrado ou já vendido.");
+        }
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Insira um ID válido.");
+    }
+
         
         //produtosdao.venderProduto(Integer.parseInt(id));
         listarProdutos();
+          try {
+        ProdutosDAO produtosdao = new ProdutosDAO();
+        
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setNumRows(0);
+        
+        ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+        
+        for (ProdutosDTO produto : listagem) {
+            model.addRow(new Object[]{
+                produto.getId(),
+                produto.getNome(),
+                produto.getValor(),
+                produto.getStatus()
+            });
+        }
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Erro ao listar produtos: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
